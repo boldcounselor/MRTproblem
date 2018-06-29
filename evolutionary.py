@@ -65,19 +65,19 @@ def init_organisms(population, nodeNo):
 	return [organism(nodeNo,nodesInfo) for _ in range(population)]
 
 def fitnessCalc(adjMatrix,nodeNo,nodesInfo):
-	shortestPaths= np.full([nodeNo,nodeNo], np.inf)
+	shortestPaths = np.full([nodeNo,nodeNo], np.inf)
+	roadDist = np.zeros((nodeNo,nodeNo))
 	for i in range(1,nodeNo):
 			for x in range(0,i):
 				if(adjMatrix[x,i]==1):
-					shortestPaths[i,x]=((nodesInfo[i].x-nodesInfo[x].x)**2+(nodesInfo[i].y-nodesInfo[x].y)**2)**0.5
-					shortestPaths[x,i]=shortestPaths[i,x]
+					shortestPaths[i,x] = shortestPaths[x,i] = roadDist[i,x] = roadDist[x,i] = ((nodesInfo[i].x-nodesInfo[x].x)**2+(nodesInfo[i].y-nodesInfo[x].y)**2)**0.5
 	np.fill_diagonal(shortestPaths,0)
 	for k in range(nodeNo):
 		for i in range(nodeNo):
 			for j in range(nodeNo):
 				if shortestPaths[i,j] > shortestPaths[i,k] + shortestPaths[k,j]:
 					shortestPaths[i,j] = shortestPaths[i,k] + shortestPaths[k,j]
-	return np.sum(np.multiply(commuterCrowdSize,shortestPaths))
+	return np.sum(np.multiply(commuterCrowdSize,shortestPaths))*np.sum(roadDist)
 
 def fitness(organisms):
 	for organism in organisms:
@@ -85,7 +85,7 @@ def fitness(organisms):
 	return organisms
 
 def selection(organisms):
-	organisms = sorted(organisms, key=lambda organism: organism.fitness, reverse=True)
+	organisms = sorted(organisms, key=lambda organism: organism.fitness)
 	organisms = organisms[:int(cutoff*len(organisms))]
 
 def crossover(organisms):
