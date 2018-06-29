@@ -1,5 +1,5 @@
-# MRTproblemGA
-This is basically an adaptation of a genetic algorithm that is hopefully able to connect nodes with an assigned population value in an optimal way.
+# MRTproblem
+This is an exercise to connect nodes with an assigned population value in an optimal way.
 
 # Introduction
 Each station has a population value and the size of the crowd that wants to travel from one station to another is determined by the size of both the origin and destination stations.
